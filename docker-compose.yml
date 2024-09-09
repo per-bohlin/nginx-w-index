@@ -1,0 +1,23 @@
+---
+services:
+  index-w-index:
+    image: perbohlin/nginx-w-index:test
+    container_name: nginx-w-index
+    restart: always
+    expose:
+      - 80
+    ports:
+      - "8080:80"
+    volumes:
+      - ./example-theme/example.conf:/etc/nginx/conf.d/example.conf:ro
+      - ./example-theme/theme/dark:/usr/share/nginx/theme:ro
+      - nginx-w-index-data:/usr/share/nginx/html
+    healthcheck:
+      test: "wget --spider http://127.0.0.1:80/"
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  nginx-w-index-data:
+    name: nginx-w-index-data
